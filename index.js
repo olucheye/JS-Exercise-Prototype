@@ -42,20 +42,29 @@ Airplane.prototype.land = function () {
 function Person(name, age) {
   this.name = name;
   this.age = age;
+  this.isEating = false;
   this.stomach = [];
+
+  Person.prototype.eat = someFood =>{
+    this.isEating = true;
+    if(this.stomach.length < 10){
+      this.stomach.push(someFood);
+    }else{
+      this.isEating = false;
+    }
+  
+  }
+  
+  Person.prototype.poop = () =>{
+    this.stomach = [];
+   }
+  
+   Person.prototype.toString = () =>{
+      return `${this.name}, ${this.age}`;
+   }
 }
 
-Person.prototype.eat = someFood =>{
-   //this.stomach.add(someFood);
-}
 
-Person.prototype.poop = () =>{
-  this.stomach = [];
- }
-
- Person.prototype.toString = () =>{
-    return `${this.name} ,  ${this.age}`;
- }
 
 /*
   TASK 2
@@ -76,17 +85,27 @@ function Car( model, milesPerGallon) {
   this.milesPerGallon = milesPerGallon;
   this.tank = 0;
   this.odometer = 0;
+  //this.fuel = false;
+
+  Car.prototype.fill = gallons => {
+    this.tank = this.tank + gallons;
+    //this.fuel = true;
+  }
+
+  Car.prototype.drive = distance => {
+      this.tank = Math.round(this.tank - (distance / milesPerGallon));
+      this.odometer = distance;
+
+      if(this.tank === 0){
+        return `I ran out of fuel at ${this.odometer} miles!`;
+      }
+  }
+  
 }
 
-Car.prototype.fill = gallons => {
-  this.tank += gallons;
-}
 
-Car.prototype.drive = distance => {
-  this.distance = distance;
-  this.odometer = 50;
-  this.tank = this.milesPerGallon--;
-}
+
+
 
 /*
   TASK 3
@@ -96,32 +115,27 @@ Car.prototype.drive = distance => {
         + Should return a string "Playing with x", x being the favorite toy.
 */
 function Baby(name, age, favoriteToy) {
-  Person.call(this, name, age);
+  
   this.favoriteToy = favoriteToy;
-}
 
-Baby.prototype.play = () => {
-  return ' Playing with ' + this.favoriteToy;
-};
+  Person.call(this, name, age);
+  Baby.prototype = Object.create(Person.prototype);
 
-Baby.prototype.eat = () =>{
-
-}
-
-Baby.prototype.poop =() =>{
+  Baby.prototype.play = () => {
+    return 'Playing with ' + this.favoriteToy;
+  };
 
 }
 
-Baby.prototype.toString=()=>{
 
-};
+
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. In Global scope, this, refers to the window object
+  1. In a Global scope, this, refers to the window object. 
   2. In a object or its prototype, this, refers to the object before the dot.
-  3. 
+  3. In a function instantiated with the "new" keyword, this, refers to a new object.
   4. 
 */
 
